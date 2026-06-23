@@ -426,6 +426,10 @@ a.contact__item:hover{ background:#13261d; }
   .reveal{ opacity:1; transform:none; }
 }
 
+/* light content protection — artwork images only (page text stays selectable) */
+.card__media img, #lbImg, .hero__photo img, .portrait img, .contact__photo img{
+  -webkit-user-drag:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+}
 </style>
 </head>
 <body>
@@ -901,6 +905,11 @@ const cardIO = new IntersectionObserver(entries => {
 }, { threshold:0.08 });
 $$('.card').forEach(c => { c.style.opacity = 0; c.style.transform = 'translateY(28px)'; cardIO.observe(c); });
 
+// --- light content protection (images only; not foolproof, screenshots still work) ---
+document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+document.addEventListener('contextmenu', e => {
+  if (e.target.closest('.card__media, .lb, .hero__photo, .portrait, .contact__photo')) e.preventDefault();
+});
 </script>
 </body>
 </html>
